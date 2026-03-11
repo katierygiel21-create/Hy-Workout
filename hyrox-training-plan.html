@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🏁 My HYROX Training Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f7d6df;
+    --pink-dark: #e8aabb;
+    --pink-accent: #d4849a;
+    --yellow: #fef3c7;
+    --yellow-dark: #fde68a;
+    --yellow-accent: #f59e0b;
+    --blue: #dbeafe;
+    --blue-dark: #bfdbfe;
+    --blue-accent: #7cb9e8;
+    --white: #fffdf9;
+    --text: #3d2b35;
+    --text-light: #7a5c6a;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Petal background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, #fce4ec88 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 10%, #e3f2fd88 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 90%, #fffde788 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, #fce4ec55 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 36px 0 20px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header .emoji-row {
+    font-size: 28px;
+    letter-spacing: 6px;
+    margin-bottom: 10px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--pink-accent);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .header h1 span {
+    font-style: italic;
+    color: var(--blue-accent);
+  }
+
+  .race-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--pink), var(--yellow));
+    border: 2px solid var(--pink-dark);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 14px;
+    box-shadow: 0 4px 12px #e8aabb30;
+  }
+
+  /* Week navigation pills */
+  .week-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 0 4px;
+    scrollbar-width: none;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .week-nav::-webkit-scrollbar { display: none; }
+
+  .week-pill {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: var(--blue);
+    color: var(--text);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .week-pill:hover, .week-pill.active {
+    background: var(--blue-accent);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px #7cb9e840;
+  }
+  .week-pill.race { background: var(--pink); }
+  .week-pill.race:hover, .week-pill.race.active {
+    background: var(--pink-accent);
+  }
+
+  /* Week section */
+  .week-section {
+    margin-top: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .week-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--pink-dark);
+    line-height: 1;
+    opacity: 0.6;
+  }
+
+  .week-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .week-info p {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  /* Workout card */
+  .workout-card {
+    background: white;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px #d4849a15;
+    border: 1.5px solid #f0e4ea;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .workout-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px #d4849a22; }
+
+  .card-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .day-icon.strength { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); }
+  .day-icon.gym { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); }
+  .day-icon.run { background: linear-gradient(135deg, var(--yellow), var(--yellow-dark)); }
+  .day-icon.conditioning { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+  .day-icon.rest { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+  .day-icon.race { background: linear-gradient(135deg, var(--pink), var(--yellow)); }
+
+  .card-title {
+    flex: 1;
+  }
+  .card-title h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .card-title .date-tag {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .time-badge {
+    font-size: 11px;
+    color: var(--text-light);
+    background: var(--yellow);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .chevron {
+    font-size: 14px;
+    color: var(--pink-accent);
+    transition: transform 0.3s ease;
+    margin-left: 4px;
+  }
+  .workout-card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .workout-card.open .card-body { max-height: 1200px; }
+
+  .card-content {
+    padding: 0 18px 18px;
+    border-top: 1.5px dashed #f0e4ea;
+    padding-top: 14px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--pink-accent);
+    margin-top: 12px;
+    margin-bottom: 6px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  .exercise-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .exercise-list li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 7px 12px;
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid #f0e4ea;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .exercise-list li::before {
+    content: '✿';
+    color: var(--pink-accent);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .rounds-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pink), var(--yellow));
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 8px 0;
+  }
+
+  .rest-note {
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: var(--blue);
+    border-radius: 8px;
+  }
+
+  .hyrox-sequence {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hyrox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 10px;
+    background: var(--blue);
+    border-radius: 10px;
+  }
+  .hyrox-row .run-tag {
+    background: var(--yellow-dark);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .hyrox-row .station {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* Completion checkbox */
+  .complete-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid var(--pink-dark);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--pink-accent);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .complete-btn:hover { background: var(--pink); }
+  .complete-btn.done {
+    background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+    border-color: var(--pink-accent);
+    color: white;
+  }
+
+  /* Progress bar */
+  .progress-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 18px;
+    margin: 20px 0;
+    border: 1.5px solid #f0e4ea;
+    box-shadow: 0 4px 16px #d4849a10;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .progress-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .progress-bar {
+    height: 10px;
+    background: var(--pink);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink-accent), var(--blue-accent));
+    border-radius: 10px;
+    transition: width 0.6s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Race day card */
+  .race-day-card {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--yellow) 50%, var(--blue) 100%);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    text-align: center;
+    border: 2px solid var(--pink-dark);
+    box-shadow: 0 8px 32px #d4849a30;
+    margin-bottom: 14px;
+  }
+  .race-day-card .race-emoji { font-size: 48px; display: block; margin-bottom: 10px; }
+  .race-day-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .race-day-card p { font-size: 14px; color: var(--text-light); margin-top: 6px; }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(255,253,249,0.92);
+    backdrop-filter: blur(12px);
+    border-top: 1.5px solid #f0e4ea;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 14px;
+    z-index: 100;
+  }
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s ease;
+  }
+  .nav-btn .nav-icon { font-size: 22px; }
+  .nav-btn.active { color: var(--pink-accent); }
+
+  .hidden { display: none !important; }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall 1.2s ease-out forwards;
+  }
+  @keyframes confettiFall {
+    from { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+    to { opacity: 0; transform: translateY(80vh) rotate(720deg); }
+  }
+
+  /* Notes tab */
+  .notes-area {
+    background: white;
+    border-radius: var(--radius);
+    padding: 18px;
+    border: 1.5px solid #f0e4ea;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px #d4849a10;
+  }
+  .notes-area h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .notes-area textarea {
+    width: 100%;
+    min-height: 120px;
+    border: 1.5px solid #f0e4ea;
+    border-radius: 12px;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    resize: vertical;
+    outline: none;
+    background: var(--white);
+    transition: border-color 0.2s;
+  }
+  .notes-area textarea:focus { border-color: var(--pink-accent); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="emoji-row">🌸 🏃‍♀️ 🌼</div>
+    <h1>My HYROX <span>Training Plan</span></h1>
+    <div class="race-badge">🏁 Race Day: May 28, 2025</div>
+  </div>
+
+  <!-- View: Plan -->
+  <div id="view-plan">
+
+    <div class="progress-section">
+      <h3>✨ Your Progress</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      <div class="progress-label">
+        <span id="progress-text">0 workouts done</span>
+        <span id="progress-pct">0%</span>
+      </div>
+    </div>
+
+    <!-- Week nav -->
+    <div class="week-nav" id="week-nav"></div>
+
+    <!-- All weeks will be injected here -->
+    <div id="weeks-container"></div>
+
+  </div>
+
+  <!-- View: Notes -->
+  <div id="view-notes" class="hidden">
+    <div class="notes-area" style="margin-top:28px">
+      <h3>📓 My Training Notes</h3>
+      <textarea id="notes-text" placeholder="Jot down how workouts felt, PRs, how you're feeling... 💕"></textarea>
+    </div>
+    <div class="notes-area" style="margin-top:14px">
+      <h3>🌟 Goals & Mantras</h3>
+      <textarea id="goals-text" placeholder="Write your goals, your 'why', your race day mantra... 🏁"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showView('plan', this)">
+    <span class="nav-icon">🗓️</span> Plan
+  </button>
+  <button class="nav-btn" onclick="showView('notes', this)">
+    <span class="nav-icon">📓</span> Notes
+  </button>
+</div>
+
+<script>
+const TOTAL_WORKOUTS_KEY = 'hyrox_done';
+
+const weeks = [
+  {
+    num: 1, label: "Week 1", subtitle: "Ease In – Getting Over Being Sick",
+    days: [
+      {
+        id: "w1d1", type: "strength", icon: "💪", title: "Strength + Run",
+        date: "Wednesday, March 11", time: "40–45 min",
+        warmup: ["Light jog", "Leg swings", "Bodyweight squats"],
+        rounds: "4 rounds",
+        exercises: ["400m run", "15 goblet squats (20 lb DB)", "12 pushups", "20 walking lunges", "30 sec plank"],
+        rest: "Rest 90 sec between rounds",
+        notes: "Cooldown jog/stretch 5 min"
+      },
+      {
+        id: "w1d2", type: "gym", icon: "🏋️‍♀️", title: "Gym – HYROX Intro",
+        date: "Thursday, March 12", time: "45–50 min",
+        warmup: ["5–7 min general warmup"],
+        rounds: "3 rounds",
+        exercises: ["800m treadmill run", "500m row", "20 wall balls", "Sled push", "Sled pull"],
+        rest: "Rest 2 min between rounds"
+      },
+      {
+        id: "w1d3", type: "run", icon: "🏃‍♀️", title: "Speed Run",
+        date: "Friday, March 13", time: "35–40 min",
+        warmup: ["5–7 min easy jog"],
+        rounds: "5 rounds",
+        exercises: ["400m run (fast)", "400m walk/jog recovery"],
+        notes: "Cooldown jog"
+      },
+      {
+        id: "w1d4", type: "rest", icon: "🛁", title: "Weekend – Rest & Recover",
+        date: "Saturday & Sunday", time: "OFF",
+        notes: "Rest, hydrate, stretch, recover 🌸"
+      }
+    ]
+  },
+  {
+    num: 2, label: "Week 2", subtitle: "Building the Base",
+    days: [
+      {
+        id: "w2d1", type: "strength", icon: "💪", title: "Strength Circuit",
+        date: "Monday, March 16", time: "45–50 min",
+        warmup: ["5–7 min"],
+        rounds: "5 rounds",
+        exercises: ["400m run", "20 goblet squats", "15 pushups", "20 walking lunges"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w2d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, March 18", time: "~45 min",
+        warmup: ["General warmup"],
+        rounds: "4 rounds",
+        exercises: ["600m run", "15 dumbbell thrusters", "20 situps", "20 step-ups"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w2d3", type: "gym", icon: "🏋️‍♀️", title: "Gym Day",
+        date: "Thursday, March 19", time: "55–60 min",
+        warmup: ["General warmup"],
+        rounds: "4 rounds",
+        exercises: ["1000m row", "Sled push", "Sled pull", "25 wall balls", "600m run"],
+        rest: "Rest 2 min between rounds"
+      },
+      {
+        id: "w2d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, March 20", time: "35–40 min",
+        notes: "3.5 mile easy run 🌸"
+      }
+    ]
+  },
+  {
+    num: 3, label: "Week 3", subtitle: "Getting Stronger",
+    days: [
+      {
+        id: "w3d1", type: "strength", icon: "💪", title: "Strength",
+        date: "Monday, March 23", time: "~50 min",
+        rounds: "5 rounds",
+        exercises: ["600m run", "20 goblet squats", "20 pushups", "20 lunges"]
+      },
+      {
+        id: "w3d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, March 25", time: "45–50 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 DB thrusters", "20 situps", "20 step-ups"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w3d3", type: "gym", icon: "🏋️‍♀️", title: "Gym",
+        date: "Thursday, March 26", time: "~60 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "750m row", "Sled push", "30 wall balls"],
+        rest: "Rest 2 min between rounds"
+      },
+      {
+        id: "w3d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, March 27", time: "40–45 min",
+        notes: "4 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 4, label: "Week 4", subtitle: "Pushing Further",
+    days: [
+      {
+        id: "w4d1", type: "strength", icon: "💪", title: "Strength",
+        date: "Monday, March 30", time: "50 min",
+        rounds: "5 rounds",
+        exercises: ["800m run", "20 goblet squats", "20 burpees"]
+      },
+      {
+        id: "w4d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, April 1", time: "45 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 lunges", "20 pushups", "30 sec plank"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w4d3", type: "gym", icon: "🏋️‍♀️", title: "HYROX Gym Day",
+        date: "Thursday, April 3", time: "60–65 min",
+        hyrox: [
+          {run: "1 km run", station: "1000m row"},
+          {run: "1 km run", station: "Sled push"},
+          {run: "1 km run", station: "Sled pull"}
+        ]
+      },
+      {
+        id: "w4d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, April 4", time: "45–50 min",
+        notes: "4.5 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 5, label: "Week 5", subtitle: "Level Up",
+    days: [
+      {
+        id: "w5d1", type: "strength", icon: "💪", title: "Strength Endurance",
+        date: "Monday, April 6", time: "50–55 min",
+        rounds: "5 rounds",
+        exercises: ["1 km run", "20 goblet squats", "20 pushups"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w5d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, April 8", time: "45–50 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 DB thrusters", "20 lunges", "20 situps"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w5d3", type: "gym", icon: "🏋️‍♀️", title: "Gym – HYROX",
+        date: "Thursday, April 9", time: "60–65 min",
+        rounds: "4 rounds",
+        exercises: ["1000m row", "Sled push", "Sled pull", "30 wall balls", "800m run"],
+        rest: "Rest 2 min between rounds"
+      },
+      {
+        id: "w5d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, April 10", time: "50–55 min",
+        notes: "5 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 6, label: "Week 6", subtitle: "Getting Race-Ready",
+    days: [
+      {
+        id: "w6d1", type: "strength", icon: "💪", title: "Strength",
+        date: "Monday, April 13", time: "55 min",
+        rounds: "5 rounds",
+        exercises: ["1 km run", "25 squats", "20 burpees"]
+      },
+      {
+        id: "w6d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, April 15", time: "45 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 thrusters", "20 lunges"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w6d3", type: "gym", icon: "🏋️‍♀️", title: "HYROX Simulation",
+        date: "Thursday, April 16", time: "65–70 min",
+        hyrox: [
+          {run: "1 km run", station: "1000m row"},
+          {run: "1 km run", station: "Sled push"},
+          {run: "1 km run", station: "Sled pull"},
+          {run: "1 km run", station: "50 wall balls"}
+        ]
+      },
+      {
+        id: "w6d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, April 17", time: "55–60 min",
+        notes: "5.5 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 7, label: "Week 7", subtitle: "Strong & Consistent",
+    days: [
+      {
+        id: "w7d1", type: "strength", icon: "💪", title: "Strength",
+        date: "Monday, April 20", time: "55 min",
+        rounds: "5 rounds",
+        exercises: ["1 km run", "20 burpees", "25 goblet squats"]
+      },
+      {
+        id: "w7d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, April 22", time: "45 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 thrusters", "20 lunges"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w7d3", type: "gym", icon: "🏋️‍♀️", title: "Gym",
+        date: "Thursday, April 23", time: "~65 min",
+        rounds: "5 rounds",
+        exercises: ["800m run", "750m row", "Sled push", "30 wall balls"],
+        rest: "Rest 2 min between rounds"
+      },
+      {
+        id: "w7d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, April 24", time: "60–65 min",
+        notes: "6 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 8, label: "Week 8", subtitle: "Peak Week 💪",
+    days: [
+      {
+        id: "w8d1", type: "strength", icon: "💪", title: "Strength",
+        date: "Monday, April 27", time: "55 min",
+        rounds: "6 rounds",
+        exercises: ["800m run", "20 squats", "20 burpees"]
+      },
+      {
+        id: "w8d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, April 29", time: "45 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 thrusters", "20 lunges"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w8d3", type: "gym", icon: "🏋️‍♀️", title: "BIG HYROX Simulation",
+        date: "Thursday, April 30", time: "70–75 min",
+        hyrox: [
+          {run: "1 km run", station: "1000m row"},
+          {run: "1 km run", station: "Sled push"},
+          {run: "1 km run", station: "Sled pull"},
+          {run: "1 km run", station: "50 wall balls"},
+          {run: "1 km run", station: "100 lunges"}
+        ]
+      },
+      {
+        id: "w8d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, May 1", time: "~60 min",
+        notes: "6 miles easy 🌸"
+      }
+    ]
+  },
+  {
+    num: 9, label: "Week 9", subtitle: "Strength Endurance",
+    days: [
+      {
+        id: "w9d1", type: "strength", icon: "💪", title: "Strength Endurance",
+        date: "Monday, May 4", time: "~55 min",
+        warmup: ["Light jog", "Leg swings", "10 bodyweight squats", "10 lunges", "10 pushups"],
+        rounds: "5 rounds",
+        exercises: ["800m run", "20 goblet squats (20 lb DB)", "20 pushups", "20 walking lunges"],
+        rest: "Rest 90 sec between rounds",
+        notes: "Cooldown stretch"
+      },
+      {
+        id: "w9d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, May 6", time: "45–50 min",
+        warmup: ["5–7 min jog"],
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 dumbbell thrusters (20 lb DB)", "20 situps", "20 step-ups"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w9d3", type: "gym", icon: "🏋️‍♀️", title: "HYROX Simulation",
+        date: "Thursday, May 7", time: "65–70 min",
+        warmup: ["7 min warmup"],
+        hyrox: [
+          {run: "1 km run", station: "1000m row"},
+          {run: "1 km run", station: "Sled push"},
+          {run: "1 km run", station: "Sled pull"},
+          {run: "1 km run", station: "50 wall balls"}
+        ],
+        rest: "Rest only as needed"
+      },
+      {
+        id: "w9d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, May 8", time: "55–60 min",
+        notes: "5.5 mile easy run 🌸"
+      }
+    ]
+  },
+  {
+    num: 10, label: "Week 10", subtitle: "Last Hard Week 🔥",
+    days: [
+      {
+        id: "w10d1", type: "strength", icon: "💪", title: "Strength + Burpees",
+        date: "Monday, May 11", time: "~55 min",
+        warmup: ["7 min"],
+        rounds: "5 rounds",
+        exercises: ["1 km run", "25 goblet squats", "20 burpees"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w10d2", type: "conditioning", icon: "🔥", title: "Conditioning",
+        date: "Wednesday, May 13", time: "~45 min",
+        rounds: "4 rounds",
+        exercises: ["800m run", "20 DB thrusters", "20 lunges", "20 situps"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w10d3", type: "gym", icon: "🏋️‍♀️", title: "Final Big Simulation",
+        date: "Thursday, May 14", time: "70–75 min",
+        warmup: ["8 min"],
+        hyrox: [
+          {run: "1 km run", station: "1000m row"},
+          {run: "1 km run", station: "Sled push"},
+          {run: "1 km run", station: "Sled pull"},
+          {run: "1 km run", station: "50 wall balls"},
+          {run: "1 km run", station: "100 walking lunges"}
+        ],
+        notes: "This is the hardest workout of the plan. YOU GOT THIS 💪"
+      },
+      {
+        id: "w10d4", type: "run", icon: "🏃‍♀️", title: "Long Run",
+        date: "Friday, May 15", time: "50–55 min",
+        notes: "5 mile relaxed run 🌸"
+      }
+    ]
+  },
+  {
+    num: 11, label: "Week 11", subtitle: "Taper Week 🌸",
+    days: [
+      {
+        id: "w11d1", type: "strength", icon: "💪", title: "Light Strength",
+        date: "Monday, May 18", time: "~40 min",
+        warmup: ["5 min"],
+        rounds: "4 rounds",
+        exercises: ["600m run", "15 goblet squats", "15 pushups", "15 lunges"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w11d2", type: "conditioning", icon: "🔥", title: "Light Conditioning",
+        date: "Wednesday, May 20", time: "~35 min",
+        rounds: "3 rounds",
+        exercises: ["800m run", "15 dumbbell thrusters", "15 situps"],
+        rest: "Rest 90 sec between rounds"
+      },
+      {
+        id: "w11d3", type: "gym", icon: "🏋️‍♀️", title: "Light Gym Session",
+        date: "Thursday, May 21", time: "~40 min",
+        rounds: "2 rounds",
+        exercises: ["800m run", "500m row", "Light sled push", "20 wall balls"],
+        notes: "Nothing maximal today. Save it for race day!"
+      },
+      {
+        id: "w11d4", type: "run", icon: "🏃‍♀️", title: "Easy Run",
+        date: "Friday, May 22", time: "~30 min",
+        notes: "3 mile easy jog 🌸"
+      }
+    ]
+  },
+  {
+    num: 12, label: "Race Week 🏁", subtitle: "You made it!",
+    isRaceWeek: true,
+    days: [
+      {
+        id: "rw1", type: "run", icon: "🏃‍♀️", title: "Shakeout Run",
+        date: "Monday, May 25", time: "20–25 min",
+        warmup: ["10 min easy jog"],
+        exercises: ["3 × 200m relaxed strides", "Walk back between each"],
+        notes: "Stretch well 🌸"
+      },
+      {
+        id: "rw2", type: "rest", icon: "🛁", title: "Off / Light Walk",
+        date: "Tuesday, May 26", time: "REST",
+        notes: "Light walk + mobility work. Rest up! 💕"
+      },
+      {
+        id: "rw3", type: "rest", icon: "😴", title: "Full Rest",
+        date: "Wednesday, May 27", time: "REST",
+        notes: "Hydrate, stretch, relax. You are READY. 🌸"
+      },
+      {
+        id: "rw4", type: "race", icon: "🏁", title: "HYROX RACE DAY",
+        date: "Thursday, May 28", time: "GO TIME",
+        notes: "You trained for this. You are strong. YOU GOT THIS. 🏁✨💪"
+      }
+    ]
+  }
+];
+
+// Load completions from memory (in-app state)
+let done = {};
+try {
+  const saved = localStorage.getItem(TOTAL_WORKOUTS_KEY);
+  if (saved) done = JSON.parse(saved);
+} catch(e) {}
+
+function saveDone() {
+  try { localStorage.setItem(TOTAL_WORKOUTS_KEY, JSON.stringify(done)); } catch(e) {}
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = weeks.reduce((a, w) => a + w.days.filter(d => d.type !== 'rest').length, 0);
+  const completed = Object.values(done).filter(Boolean).length;
+  const pct = Math.round((completed / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = completed + ' workouts done';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function renderWeeks() {
+  const nav = document.getElementById('week-nav');
+  const container = document.getElementById('weeks-container');
+
+  weeks.forEach((week, wi) => {
+    // Nav pill
+    const pill = document.createElement('button');
+    pill.className = 'week-pill' + (week.isRaceWeek ? ' race' : '') + (wi === 0 ? ' active' : '');
+    pill.textContent = week.label;
+    pill.onclick = () => {
+      document.querySelectorAll('.week-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      document.querySelectorAll('.week-section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('week-' + wi).classList.remove('hidden');
+      document.getElementById('week-' + wi).scrollIntoView({behavior: 'smooth', block: 'start'});
+    };
+    nav.appendChild(pill);
+
+    // Week section
+    const section = document.createElement('div');
+    section.className = 'week-section' + (wi > 0 ? ' hidden' : '');
+    section.id = 'week-' + wi;
+
+    let html = `<div class="week-header">
+      <div class="week-number">${week.isRaceWeek ? '🏁' : week.num}</div>
+      <div class="week-info">
+        <h2>${week.label}</h2>
+        <p>${week.subtitle}</p>
+      </div>
+    </div>`;
+
+    week.days.forEach(day => {
+      if (day.type === 'race') {
+        html += `<div class="race-day-card">
+          <span class="race-emoji">🏁</span>
+          <h2>HYROX Race Day!</h2>
+          <p>${day.date}</p>
+          <p style="margin-top:10px; font-size:15px; font-weight:600; color:var(--pink-accent)">${day.notes}</p>
+        </div>`;
+        return;
+      }
+
+      const isDone = done[day.id];
+      html += `<div class="workout-card${isDone ? ' done-card' : ''}" id="card-${day.id}" ${day.type === 'rest' ? '' : `onclick="toggleCard('${day.id}')"`}>
+        <div class="card-header">
+          <div class="day-icon ${day.type}">${day.icon}</div>
+          <div class="card-title">
+            <h3>${day.title}</h3>
+            <div class="date-tag">📅 ${day.date}</div>
+          </div>
+          <div class="time-badge">⏱ ${day.time}</div>
+          ${day.type !== 'rest' ? '<span class="chevron">▾</span>' : ''}
+        </div>`;
+
+      if (day.type !== 'rest') {
+        html += `<div class="card-body"><div class="card-content">`;
+
+        if (day.warmup) {
+          html += `<div class="section-label">Warmup</div><ul class="exercise-list">`;
+          day.warmup.forEach(w => { html += `<li>${w}</li>`; });
+          html += `</ul>`;
+        }
+
+        if (day.hyrox) {
+          html += `<div class="section-label">HYROX Sequence</div><div class="hyrox-sequence">`;
+          day.hyrox.forEach(r => {
+            html += `<div class="hyrox-row"><span class="run-tag">${r.run}</span><span class="station">→ ${r.station}</span></div>`;
+          });
+          html += `</div>`;
+        } else if (day.exercises) {
+          if (day.rounds) html += `<div class="rounds-tag">🔄 ${day.rounds}</div>`;
+          html += `<ul class="exercise-list">`;
+          day.exercises.forEach(e => { html += `<li>${e}</li>`; });
+          html += `</ul>`;
+        }
+
+        if (day.rest) html += `<div class="rest-note">💙 ${day.rest}</div>`;
+        if (day.notes && day.type !== 'rest') html += `<div class="rest-note">✨ ${day.notes}</div>`;
+
+        html += `<button class="complete-btn ${isDone ? 'done' : ''}" id="btn-${day.id}" onclick="event.stopPropagation(); markDone('${day.id}')">
+          ${isDone ? '✅ Completed! Great work!' : '☐ Mark as done'}
+        </button>`;
+
+        html += `</div></div>`;
+      } else {
+        if (day.notes) html += `<div style="padding: 0 18px 14px; font-size: 13px; color: var(--text-light);">${day.notes}</div>`;
+      }
+
+      html += `</div>`;
+    });
+
+    section.innerHTML = html;
+    container.appendChild(section);
+  });
+
+  updateProgress();
+}
+
+function toggleCard(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+}
+
+function markDone(id) {
+  done[id] = !done[id];
+  saveDone();
+  const btn = document.getElementById('btn-' + id);
+  btn.textContent = done[id] ? '✅ Completed! Great work!' : '☐ Mark as done';
+  btn.className = 'complete-btn' + (done[id] ? ' done' : '');
+  if (done[id]) spawnConfetti(btn);
+}
+
+function spawnConfetti(btn) {
+  const colors = ['#f7d6df', '#fde68a', '#bfdbfe', '#d4849a', '#7cb9e8', '#fce4ec'];
+  const rect = btn.getBoundingClientRect();
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left: ${rect.left + rect.width/2 + (Math.random()-0.5)*60}px;
+      top: ${rect.top}px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay: ${Math.random()*0.3}s;
+      transform: rotate(${Math.random()*360}deg);
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1500);
+  }
+}
+
+function showView(view, btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-plan').classList.toggle('hidden', view !== 'plan');
+  document.getElementById('view-notes').classList.toggle('hidden', view !== 'notes');
+}
+
+// Notes persistence
+function initNotes() {
+  const ta = document.getElementById('notes-text');
+  const ga = document.getElementById('goals-text');
+  try {
+    ta.value = localStorage.getItem('hyrox_notes') || '';
+    ga.value = localStorage.getItem('hyrox_goals') || '';
+  } catch(e) {}
+  ta.addEventListener('input', () => { try { localStorage.setItem('hyrox_notes', ta.value); } catch(e) {} });
+  ga.addEventListener('input', () => { try { localStorage.setItem('hyrox_goals', ga.value); } catch(e) {} });
+}
+
+renderWeeks();
+initNotes();
+</script>
+</body>
+</html>
